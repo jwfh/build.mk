@@ -1,0 +1,5 @@
+.if !defined(_INCLUDE_USES_PYTHON_MK)
+_INCLUDE_USES_PYTHON_MK=	yes
+
+
+.endif #!defined(_INCLUDE_USES_PYTHON_MK)
