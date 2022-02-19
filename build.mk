@@ -38,3 +38,5 @@ _usefound=
 .endfor
 .endif
 .endfor
+
+.include "default.mk"
