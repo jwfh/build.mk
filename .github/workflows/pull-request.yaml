@@ -1,0 +1,16 @@
+name: Pull Request CI/CD Flow
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Get branch name
+        id: branch
+        run: echo "::set-output name=branch::$(echo $GITHUB_REF | sed -e 's/refs\/heads\///g')"
+      - name: Execute tests
+        run: make -C Tests test
