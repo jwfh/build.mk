@@ -4,5 +4,5 @@ TESTS=	\
 
 test:
 .for TEST in ${TESTS}
-	bats --timing --formatter ${REPORT_FORMAT} ${TEST}
+	${.CURDIR:tA}/helpers/bats-core/bin/bats --timing --formatter ${REPORT_FORMAT} ${TEST}
 .endfor
