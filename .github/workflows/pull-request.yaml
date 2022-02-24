@@ -10,6 +10,8 @@ jobs:
     container: jwhouse/github-actions-agent:latest
     steps:
       - uses: actions/checkout@v1
+        with:
+          submodules: true
       - name: Get branch name
         id: branch
         run: echo "::set-output name=branch::$(echo $GITHUB_REF | sed -e 's/refs\/heads\///g')"
