@@ -3,9 +3,9 @@
 # make -C /repos/${REPO_NAME}/.
 .CURDIR:=	${.CURDIR:tA}
 
-USESDIR?=	${.CURDIR}/Uses
-SCRIPTSDIR?=	${.CURDIR}/Scripts
-TEMPLATESDIR?=	${.CURDIR}/Templates
+USESDIR?=	${.PARSEDIR}/Uses
+SCRIPTSDIR?=	${.PARSEDIR}/Scripts
+TEMPLATESDIR?=	${.PARSEDIR}/Templates
 LOCALBASE?=	/usr/local
 
 
