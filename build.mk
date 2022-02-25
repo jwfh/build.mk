@@ -2,12 +2,17 @@
 # builds can occur when .CURDIR is a symbolic link, or with something like
 # make -C /repos/${REPO_NAME}/.
 .CURDIR:=	${.CURDIR:tA}
+REPO_ROOT!=	git rev-parse --show-toplevel
 
+USES?=
 USESDIR?=	${.PARSEDIR}/Uses
 SCRIPTSDIR?=	${.PARSEDIR}/Scripts
 TEMPLATESDIR?=	${.PARSEDIR}/Templates
 LOCALBASE?=	/usr/local
 
+.if exists(${REPO_ROOT}/settings.mk)
+.include "${REPO_ROOT}/settings.mk"
+.endif
 
 # Loading features
 _chk_uses=
