@@ -1,5 +1,7 @@
 .if !defined(_INCLUDE_USES_PYTHON_MK)
 _INCLUDE_USES_PYTHON_MK=	yes
 
+PROG_DEPENDS+=	poetry
+
 
 .endif #!defined(_INCLUDE_USES_PYTHON_MK)

@@ -1,3 +1,3 @@
-USES=	python cmake
+IGNORE=	just to test
 
 .include "../../build.mk"
