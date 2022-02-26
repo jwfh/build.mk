@@ -14,6 +14,15 @@ LOCALBASE?=	/usr/local
 .include "${REPO_ROOT}/settings.mk"
 .endif
 
+# Exit or warning on broken packages
+BROKEN?=
+IGNORE?=
+.if ${.TARGETS:Nmake*check} != "" && (!empty(BROKEN) && !defined(TRYBROKEN) || !empty(IGNORE))
+.error ${!empty(BROKEN):?BROKEN due to '${BROKEN}':IGNORE due to '${IGNORE}'}
+.elif !empty(BROKEN) && defined(TRYBROKEN)
+.warning BROKEN due to '${BROKEN}'. Attempting to build anyway because TRYBROKEN is defined.
+.endif
+
 # Loading features
 _chk_uses=
 .for f in ${USES}

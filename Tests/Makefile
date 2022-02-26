@@ -1,5 +1,6 @@
 REPORT_FORMAT?=	junit
 TESTS=	\
+	test-broken \
 	test-uses \
 
 test:
