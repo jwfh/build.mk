@@ -57,10 +57,11 @@ _usefound=
 .endfor
 
 .for PROG in ${PROG_DEPENDS}
-.if !defined(${PROG:tu}_CMD)
-${PROG:tu}_CMD!= command -v ${PROG} || which ${PROG} || :
-.endif #!defined(${PROG:tu}_CMD)
-.if empty(${PROG:tu}_CMD)
+_prog:=${PROG:C/[^a-zA-Z0-9]//g}
+.if !defined(${_prog:tu}_CMD)
+${_prog:tu}_CMD!= command -v ${PROG} || which ${PROG} || :
+.endif #!defined(${_prog:tu}_CMD)
+.if empty(${_prog:tu}_CMD)
 .error Cannot determine location of '${PROG}'. Please make sure it is in your $$PATH and is executable by the current user.
 .endif
 .endfor #PROG in ${PROG_DEPENDS}

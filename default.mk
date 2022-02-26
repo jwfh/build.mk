@@ -7,7 +7,9 @@ _INCLUDE_DEFAULT_MK=	yes
 CURL_COMMAND=		curl -sSfm1
 EC2_METADATA_URI=	http://169.254.169.254/latest/meta-data
 
-.for f in ${:!ls ${USESDIR}!:M*.mk:C/\.mk$//}
+.for udir in ${OVERLAYS:C,$,/Mk/Uses,} ${USESDIR}
+.for f in ${:!ls ${udir}!:M*.mk:C/\.mk$//}
+_f:=${f:C/[^a-zA-Z0-9]//g}
 .if !target(make${f}check)
 make${f}check:
 .if ${_chk_uses:M${f}}
@@ -16,6 +18,7 @@ make${f}check:
 	@false
 .endif
 .endif
+.endfor
 .endfor
 
 

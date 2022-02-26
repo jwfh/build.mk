@@ -1,5 +1,6 @@
 TESTS=	\
 	test-broken \
+	test-prog-depends \
 	test-uses \
 
 .if defined(TERM) && !empty(TERM)
