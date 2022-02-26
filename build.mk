@@ -4,14 +4,20 @@
 .CURDIR:=	${.CURDIR:tA}
 REPO_ROOT!=	git rev-parse --show-toplevel
 
+NAME:=	${.CURDIR:C,^.*/([^/]+)$,\1,}
+
 USES?=
 USESDIR?=	${.PARSEDIR}/Uses
 SCRIPTSDIR?=	${.PARSEDIR}/Scripts
 TEMPLATESDIR?=	${.PARSEDIR}/Templates
 LOCALBASE?=	/usr/local
 
-OS!=            uname -s
+WORKDIR?=	${.CURDIR}/work
+
+OS!=	uname -s
 PROG_DEPENDS?=
+ARTIFACTS?=
+_SUPPORTED_ARTIFACTS?=
 
 .if exists(${REPO_ROOT}/settings.mk)
 .include "${REPO_ROOT}/settings.mk"
@@ -56,6 +62,8 @@ _usefound=
 .endif
 .endfor
 
+.include "default.mk"
+
 .for PROG in ${PROG_DEPENDS}
 _prog:=${PROG:C/[^a-zA-Z0-9]//g}
 .if !defined(${_prog:tu}_CMD)
@@ -65,5 +73,3 @@ ${_prog:tu}_CMD!= command -v ${PROG} || which ${PROG} || :
 .error Cannot determine location of '${PROG}'. Please make sure it is in your $$PATH and is executable by the current user.
 .endif
 .endfor #PROG in ${PROG_DEPENDS}
-
-.include "default.mk"
