@@ -12,6 +12,6 @@ _TAR_EXTENSION=	.txz
 
 BUILD_TARGETS+=	tar
 tar: init
-	${TAR_CMD} -cvf ${WORKDIR}/${NAME}${_TAR_EXTENSION} ${ARCHIVE_EXCLUDE:@.f.@--exclude ${.f.:Q}@} ${ARCHIVE_INCLUDE}
+	${TAR_CMD} -cvf ${WORKDIR:Q}/${NAME}${_TAR_EXTENSION} ${ARCHIVE_EXCLUDE:@.f.@--exclude ${.f.:Q}@} ${ARCHIVE_INCLUDE:Q}
 
 .endif #!defined(_INCLUDE_USES_TAR_MK)

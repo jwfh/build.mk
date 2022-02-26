@@ -18,6 +18,8 @@ OS!=	uname -s
 PROG_DEPENDS?=
 ARTIFACTS?=
 _SUPPORTED_ARTIFACTS?=
+ARCHIVE_EXCLUDE+=	work
+ARCHIVE_INCLUDE?=	.
 
 .if exists(${REPO_ROOT}/settings.mk)
 .include "${REPO_ROOT}/settings.mk"
@@ -31,6 +33,17 @@ IGNORE?=
 .elif !empty(BROKEN) && defined(TRYBROKEN)
 .warning BROKEN due to '${BROKEN}'. Attempting to build anyway because TRYBROKEN is defined.
 .endif
+
+PROG_DEPENDS+=	mkdir
+PROG_DEPENDS+=	rm
+
+all: build
+init:
+	${MKDIR_CMD} -p ${WORKDIR:Q}
+
+build: init ${BUILD_TARGETS}
+test: ${TEST_TARGETS}
+deploy: ${DEPLOY_TARGETS}
 
 # Loading features
 _chk_uses=
@@ -62,7 +75,28 @@ _usefound=
 .endif
 .endfor
 
-.include "default.mk"
+CURL_CMD=		curl -sSfm1
+EC2_METADATA_URI=	http://169.254.169.254/latest/meta-data
+
+.for udir in ${OVERLAYS:C,$,/Mk/Uses,} ${USESDIR}
+.for f in ${:!ls ${udir}!:M*.mk:C/\.mk$//}
+_f:=${f:C/[^a-zA-Z0-9]//g}
+.if !target(make${f}check)
+make${f}check:
+.if ${_chk_uses:M${f}}
+	@true
+.else
+	@false
+.endif
+.endif
+.endfor
+.endfor
+
+clean:
+	${RM_CMD} -fr ${WORKDIR:Q}
+
+targets:
+	@printf '${.ALLTARGETS:@.t.@${.t.}${.newline}@}'
 
 .for PROG in ${PROG_DEPENDS}
 _prog:=${PROG:C/[^a-zA-Z0-9]//g}
@@ -73,3 +107,8 @@ ${_prog:tu}_CMD!= command -v ${PROG} || which ${PROG} || :
 .error Cannot determine location of '${PROG}'. Please make sure it is in your $$PATH and is executable by the current user.
 .endif
 .endfor #PROG in ${PROG_DEPENDS}
+
+.SHELL: name=bash path=/bin/bash hasErrCtl=true \
+	check="set -e" ignore="set +e" \
+	echo="set -v" quiet="set +v" filter="set +v" \
+	echoFlag=v errFlag=e newline="'\n'"
