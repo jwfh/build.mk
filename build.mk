@@ -10,6 +10,9 @@ SCRIPTSDIR?=	${.PARSEDIR}/Scripts
 TEMPLATESDIR?=	${.PARSEDIR}/Templates
 LOCALBASE?=	/usr/local
 
+OS!=            uname -s
+PROG_DEPENDS?=
+
 .if exists(${REPO_ROOT}/settings.mk)
 .include "${REPO_ROOT}/settings.mk"
 .endif
@@ -52,5 +55,14 @@ _usefound=
 .endfor
 .endif
 .endfor
+
+.for PROG in ${PROG_DEPENDS}
+.if !defined(${PROG:tu}_CMD)
+${PROG:tu}_CMD!= command -v ${PROG} || which ${PROG} || :
+.endif #!defined(${PROG:tu}_CMD)
+.if empty(${PROG:tu}_CMD)
+.error Cannot determine location of '${PROG}'. Please make sure it is in your $$PATH and is executable by the current user.
+.endif
+.endfor #PROG in ${PROG_DEPENDS}
 
 .include "default.mk"

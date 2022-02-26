@@ -1,5 +1,7 @@
 .if !defined(_INCLUDE_USES_DOCKER_MK)
 _INCLUDE_USES_DOCKER_MK=	yes
 
+PROG_DEPENDS+= docker
+
 
 .endif #!defined(_INCLUDE_USES_DOCKER_MK)
