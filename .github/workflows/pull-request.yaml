@@ -5,6 +5,7 @@ on:
 
 jobs:
   test:
+    name: Unit Test Project
     runs-on: ubuntu-latest
     container: jwhouse/github-actions-agent:latest
     steps:
