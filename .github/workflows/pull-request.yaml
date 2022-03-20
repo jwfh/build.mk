@@ -41,7 +41,7 @@ jobs:
           commit-ish: 'HEAD~'
       - name: Validate tag
         run: |
-          if [ -n "$(echo '${{steps.tagger.outputs.tag}}' | grep "$${{ steps.version.outputs.version }}")" ]; then
-            echo "Git tag for version $${{ steps.version.outputs.version }} exists!"
+          if [ -n "$(echo '${{steps.tagger.outputs.tag}}' | grep "${{ steps.version.outputs.version }}")" ]; then
+            echo "Git tag for version ${{ steps.version.outputs.version }} exists!"
             exit 1
           fi
