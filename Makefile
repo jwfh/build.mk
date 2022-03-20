@@ -1,4 +1,4 @@
-VERSION=	0.1.0
+VERSION=	0.2.0
 USES=		tar:xz
 
 ARCHIVE_EXCLUDE+=	.git .github .hooks Tests .pre-commit-config.yaml .gitmodules
