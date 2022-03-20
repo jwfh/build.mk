@@ -1,0 +1,22 @@
+name: Push a new tag with push to main
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Publish Tag
+    runs-on: ubuntu-latest
+    container: jwhouse/github-actions-agent:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get current version
+        id: version
+        run: echo "::set-output name=version::v$(make -V VERSION)"
+      - uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: ${{ steps.version.outputs.version }}
+          message: '${{ steps.version.outputs.version }}: PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}'
