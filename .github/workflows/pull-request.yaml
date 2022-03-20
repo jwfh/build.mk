@@ -22,3 +22,26 @@ jobs:
         if: always() # always run even if the previous step fails
         with:
           report_paths: '**/build/test-results/TEST-*.xml'
+  validate-version:
+    name: Validate Version
+    runs-on: ubuntu-latest
+    container: jwhouse/github-actions-agent:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get current version
+        id: version
+        run: echo "::set-output name=version::v$(make -V VERSION)"
+      - name: Find Tag
+        id: tagger
+        uses: jimschubert/query-tag-action@v1
+        with:
+          include: 'v*'
+          exclude: '*-rc*'
+          commit-ish: 'HEAD~'
+      - name: Validate tag
+        run: |
+          if [ -n "$(echo '${{steps.tagger.outputs.tag}}' | grep "$${{ steps.version.outputs.version }}")" ]; then
+            echo "Git tag for version $${{ steps.version.outputs.version }} exists!"
+            exit 1
+          fi
